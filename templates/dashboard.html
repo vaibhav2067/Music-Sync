@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard | Music Sync</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}" />
+  <link href="https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">
+      <img src="{{ url_for('static', filename='icons/Group 6.svg') }}" alt="Logo" class="icon-large" />
+    </div>
+    <nav class="side-nav">
+      <a href="#" onclick="showSection('profile')">
+        <img src="{{ url_for('static', filename='icons/streamline--user-profile-focus.svg') }}" alt="" class="icon" /> Profile
+      </a>
+      <a href="#" onclick="showSection('dashboard')">
+        <img src="{{ url_for('static', filename='icons/mage--dashboard-bar-notification.svg') }}" alt="" class="icon" /> Dashboard
+      </a>
+      <a href="#" onclick="showSection('tracks')">
+        <img src="{{ url_for('static', filename='icons/solar--music-library-2-broken.svg') }}" alt="" class="icon" /> My Tracks
+      </a>
+      <a href="#" onclick="showSection('settings')">
+        <img src="{{ url_for('static', filename='icons/ep--setting.svg') }}" alt="" class="icon" /> Settings
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flashes">
+          {% for category, message in messages %}
+            <div class="flash-message {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Blobs -->
+    <div class="background-blobs">
+      <div class="blob blob1"></div>
+      <div class="blob blob2"></div>
+    </div>
+
+    <!-- Dashboard Section -->
+    <section id="dashboard-section" class="page-section glass">
+      <h2>Recently Generated Music</h2>
+      <div class="track-list">
+        {% if tracks %}
+          {% for track in tracks %}
+            <div class="track-item">
+              <div class="track-info">
+                <img src="{{ url_for('static', filename='icons/solar--upload-track-broken.svg') }}" alt="" class="icon-small" />
+                <div>
+                  <h3>{{ track.title }}</h3>
+                  <p>Genre: {{ track.genre }} | Mood: {{ track.mood }}</p>
+                  <p>Instruments: {{ track.instruments }} | Temp: {{ track.temperature }}</p>
+                  <small>{{ track.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="track-item disabled">
+            <p><img src="{{ url_for('static', filename='icons/solar--upload-track-broken.svg') }}" alt="" class="icon-small" /> No tracks generated yet</p>
+          </div>
+        {% endif %}
+      </div>
+
+      <h2 style="margin-top: 40px;">Generate New Track</h2>
+      <form class="generator-form" method="POST" action="{{ url_for('dashboard.generate_track') }}">
+        <select name="genre" required>
+          <option disabled selected>Select Genre</option>
+          <option value="Lo-fi">Lo-fi</option>
+          <option value="EDM">EDM</option>
+          <option value="Hip-hop">Hip-hop</option>
+        </select>
+
+        <select name="mood" required>
+          <option disabled selected>Select Mood</option>
+          <option value="Chill">Chill</option>
+          <option value="Energetic">Energetic</option>
+          <option value="Sad">Sad</option>
+        </select>
+
+        <input type="number" name="instruments" min="1" max="10" placeholder="Number of Instruments" required />
+        <label for="temp">Temperature: <span id="tempValue">0.5</span></label>
+        <input type="range" name="temperature" id="temp" min="0" max="1" step="0.1" value="0.5" oninput="document.getElementById('tempValue').textContent = this.value" />
+
+        <button type="submit">
+          <img src="{{ url_for('static', filename='icons/streamline--ai-generate-music-spark.svg') }}" alt="" class="icon-small" /> Generate Music
+        </button>
+      </form>
+
+      <div class="player-controls hidden">
+        <h3>Your Track Preview</h3>
+        <audio controls id="music-player">
+          <source src="" type="audio/mp3" />
+          Your browser does not support the audio element.
+        </audio>
+        <div class="actions">
+          <button disabled><img src="{{ url_for('static', filename='icons/solar--download-broken.svg') }}" alt="" class="icon-small" /> Download</button>
+          <button disabled><img src="{{ url_for('static', filename='icons/fluent--share-32-regular.svg') }}" alt="" class="icon-small" /> Share</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Profile Section -->
+    <section id="profile-section" class="page-section glass hidden">
+      <h2>My Profile</h2>
+      <div class="profile-card">
+        <img src="{{ url_for('static', filename='icons/streamline--user-profile-focus.svg') }}" alt="Profile Picture" class="avatar" />
+        <div class="profile-details">
+          <label><img src="{{ url_for('static', filename='icons/streamline--user-profile-focus.svg') }}" alt="" class="icon-small" /> Username</label>
+          <input type="text" value="{{ user.username }}" disabled />
+
+          <label><img src="{{ url_for('static', filename='icons/entypo--email.svg') }}" alt="" class="icon-small" /> Email</label>
+          <input type="email" value="{{ user.email }}" disabled />
+
+          <label><img src="{{ url_for('static', filename='icons/solar--calendar-date-linear.svg') }}" alt="" class="icon-small" /> Joined</label>
+          <input type="text" value="{{ user.created_at.strftime('%b %d, %Y') }}" disabled />
+
+          <label><img src="{{ url_for('static', filename='icons/solar--music-library-2-broken.svg') }}" alt="" class="icon-small" /> Total Tracks</label>
+          <input type="number" value="{{ total_tracks }}" disabled />
+        </div>
+      </div>
+      <button class="edit-btn">
+        <img src="{{ url_for('static', filename='icons/iconamoon--edit-light.svg') }}" alt="" class="icon-small" /> Edit Profile (coming soon)
+      </button>
+    </section>
+
+    <!-- My Tracks Section -->
+    <section id="tracks-section" class="page-section glass hidden">
+      <h2>My Tracks</h2>
+      <div class="track-list">
+        {% if tracks %}
+          {% for track in tracks %}
+            <div class="track-item">
+              <div class="track-info">
+                <img src="{{ url_for('static', filename='icons/solar--upload-track-broken.svg') }}" alt="" class="icon-small" />
+                <div>
+                  <h3>{{ track.title }}</h3>
+                  <p>Genre: {{ track.genre }} | Mood: {{ track.mood }}</p>
+                  <p>Instruments: {{ track.instruments }} | Temp: {{ track.temperature }}</p>
+                  <small>{{ track.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                </div>
+              </div>
+              <div class="track-actions">
+                <button class="download-btn" data-track-id="{{ track.id }}">
+                  <img src="{{ url_for('static', filename='icons/solar--download-broken.svg') }}" alt="Download" />
+                </button>
+                <button class="delete-btn" data-track-id="{{ track.id }}">
+                  <img src="{{ url_for('static', filename='icons/fluent--delete-32-regular.svg') }}" alt="Delete" />
+                </button>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="track-item disabled">
+            <p><img src="{{ url_for('static', filename='icons/solar--upload-track-broken.svg') }}" alt="" class="icon-small" /> No tracks generated yet</p>
+          </div>
+        {% endif %}
+      </div>
+    </section>
+
+    <!-- Settings Section -->
+    <section id="settings-section" class="page-section glass hidden">
+      <h2>Settings</h2>
+      <div class="setting-group">
+        <h3>Account Information</h3>
+        <div class="setting-item">
+          <label><img src="{{ url_for('static', filename='icons/streamline--user-profile-focus.svg') }}" alt="" class="icon-small" /> Username</label>
+          <input type="text" value="{{ user.username }}" disabled />
+        </div>
+        <div class="setting-item">
+          <label><img src="{{ url_for('static', filename='icons/entypo--email.svg') }}" alt="" class="icon-small" /> Email</label>
+          <input type="email" value="{{ user.email }}" disabled />
+        </div>
+      </div>
+
+      <div class="setting-group">
+        <h3>Preferences</h3>
+        <div class="setting-item">
+          <label><img src="{{ url_for('static', filename='icons/basil--notification-on-outline.svg') }}" alt="" class="icon-small" /> Email Notifications</label>
+          <label class="switch">
+            <input type="checkbox" disabled>
+            <span class="slider round"></span>
+          </label>
+        </div>
+        <div class="setting-item">
+          <label><img src="{{ url_for('static', filename='icons/catppuccin--folder-themes-open.svg') }}" alt="" class="icon-small" /> Theme</label>
+          <select disabled>
+            <option selected>Dark</option>
+            <option>Light</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="danger-zone">
+        <h3><img src="{{ url_for('static', filename='icons/solar--danger-triangle-outline.svg') }}" alt="" class="icon-small" /> Danger Zone</h3>
+        <button class="delete-btn" onclick="confirmDelete()">
+          <img src="{{ url_for('static', filename='icons/fluent--delete-32-regular.svg') }}" alt="" class="icon-small" /> Delete Account
+        </button>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <p>&copy; 2025 Music Sync. All rights reserved.</p>
+    </footer>
+  </main>
+
+  <!-- Section Toggle Script -->
+  <script>
+    // Section navigation
+    function showSection(section) {
+      const sections = document.querySelectorAll('.page-section');
+      sections.forEach(s => s.classList.add('hidden'));
+      document.getElementById(section + '-section').classList.remove('hidden');
+    }
+
+    // Delete confirmation
+    function confirmDelete() {
+      if (confirm("Are you sure you want to delete your account? This will permanently remove all your data.")) {
+        // In a real app, you would call an API endpoint here
+        alert("Account deletion would be processed here. This is just a demo.");
+      }
+    }
+
+    // Track actions
+    document.addEventListener('click', function(e) {
+      // Handle download button clicks
+      if (e.target.closest('.download-btn')) {
+        const trackId = e.target.closest('.download-btn').dataset.trackId;
+        alert(`Would download track ${trackId} in a real app`);
+      }
+      
+      // Handle delete button clicks
+      if (e.target.closest('.delete-btn') && !e.target.closest('#settings-section')) {
+        const trackId = e.target.closest('.delete-btn').dataset.trackId;
+        if (confirm("Delete this track permanently?")) {
+          alert(`Would delete track ${trackId} in a real app`);
+        }
+      }
+    });
+
+    // Auto-close flash messages
+    document.addEventListener('DOMContentLoaded', function() {
+      const flashes = document.querySelectorAll('.flash-message');
+      flashes.forEach(flash => {
+        setTimeout(() => {
+          flash.style.opacity = '0';
+          setTimeout(() => flash.remove(), 300);
+        }, 5000);
+      });
+    });
+
+  
+    document.querySelector('.generator-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const form = e.target;
+    const formData = new FormData(form);
+    
+    // Show loading state
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<span class="loader"></span> Generating...';
+    submitBtn.disabled = true;
+    
+    try {
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            // Update UI with new track
+            const player = document.getElementById('music-player');
+            player.querySelector('source').src = data.file_path;
+            player.load();
+            document.querySelector('.player-controls').classList.remove('hidden');
+            
+            // Refresh track list
+            location.reload();
+        } else {
+            alert('Error: ' + (data.error || 'Failed to generate track'));
+        }
+    } catch (error) {
+        alert('Error: ' + error.message);
+    } finally {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }
+});
+
+// Add CSS for loader
+const style = document.createElement('style');
+style.textContent = `
+.loader {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s linear infinite;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+`;
+document.head.appendChild(style);
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,256 @@
+/* Base */
+body {
+  font-family: "Poetsen One", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #1B1B1B;
+  color: white;
+  overflow-x: hidden;
+}
+
+.navbar {
+    position: sticky;
+    top: 0px;
+  background-color: rgba(51, 51, 51, 0.24);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  backdrop-filter: blur(10px);
+  z-index: 4;
+}
+
+.navbar .logo img {
+  width: 140px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  /* transition: background-color 0.3s ease; */
+  
+}
+
+.nav-links a img{
+    height: 30px;
+    transition: transform 0.8s ease;
+}
+
+.nav-links a img:hover {
+  /* background-color: #555; */
+  transform: scale(1.4);
+  /* border-radius: 5px; */
+}
+
+/* Background blobs */
+.background-blobs {
+  position: fixed;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.4;
+}
+
+.blob1 {
+  background: #bb86fc;
+  width: 500px;
+  height: 500px;
+  top: -100px;
+  left: -100px;
+}
+
+.blob2 {
+  background: #03dac6;
+  width: 600px;
+  height: 600px;
+  bottom: -150px;
+  right: -150px;
+}
+
+/* Contact Section */
+.contact-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 140px 20px;
+  min-height: 100vh;
+}
+
+.contact-card {
+  display: flex;
+  gap: 60px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 60px;
+  max-width: 1200px;
+  width: 100%;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+  flex-wrap: wrap;
+}
+
+.contact-info {
+  flex: 1;
+  min-width: 280px;
+}
+
+.contact-info h1 {
+  font-size: 56px;
+  margin-bottom: 20px;
+}
+
+.contact-info p {
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 40px;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.contact-form button {
+  padding: 14px;
+  font-size: 18px;
+  border: none;
+  border-radius: 30px;
+  background-color: #bb86fc;
+  color: #1B1B1B;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.contact-form button:hover {
+  background-color: #9c5dfc;
+}
+
+/* Illustration */
+.contact-image {
+  flex: 1;
+  /* max-width: 480px; */
+  min-width: 280px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contact-image img {
+  max-width: 100%;
+  width: 400px;
+}
+
+/* Footer */
+.site-footer {
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 16px;
+}
+
+/* Toast styles */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  max-width: 300px;
+  padding: 1rem 1.5rem;
+  background: rgba(32, 32, 32, 0.9);
+  color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  font-size: 0.95rem;
+  opacity: 0;
+  transform: translateY(2rem);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 1000;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.toast.hidden {
+  display: none;
+}
+
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .contact-card {
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+  }
+
+  .contact-info h1 {
+    font-size: 42px;
+    text-align: center;
+  }
+
+  .contact-info p {
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .contact-form button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .contact-info h1 {
+    font-size: 32px;
+  }
+
+  .contact-info p {
+    font-size: 16px;
+  }
+
+  .contact-image img {
+    width: 80%;
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    font-size: 16px;
+  }
+
+  .contact-form button {
+    font-size: 16px;
+    padding: 12px;
+  }
+}

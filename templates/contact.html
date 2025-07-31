@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact | Music Sync</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}" />
+  <link href="https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="{{ url_for('home') }}" class="logo">
+      <img src="{{ url_for('static', filename='icons/Group 6.svg') }}" alt="Music Sync Logo" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='icons/mynaui--home.svg') }}" alt="Home"></a></li>
+      <li><a href="{{ url_for('home') }}#aboutus"><img src="{{ url_for('static', filename='icons/id-card.png') }}" alt="About Us"></a></li>
+      <li><a href="https://github.com/vaibhav2067/Music-Generator-Using-Neural-Networks-MusicSync-">
+        <img src="{{ url_for('static', filename='icons/hugeicons--github-01.svg') }}" alt="GitHub"></a></li>
+      <li><a href="{{ url_for('contact') }}"><img src="{{ url_for('static', filename='icons/fluent--contact-card-link-16-regular.svg') }}" alt="Contact"></a></li>
+    </ul>
+  </nav>
+
+  <div class="background-blobs">
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+  </div>
+
+  <section class="contact-wrapper">
+    <div class="contact-card glass">
+      <div class="contact-info">
+        <h1>Let's Talk Music</h1>
+        <p>Have a project in mind? Want to collaborate or just say hi? We’re all ears.</p>
+        <form class="contact-form" id="contactForm">
+          <input type="text" name="name" placeholder="Full Name" required />
+          <input type="email" name="email" placeholder="Email Address" required />
+          <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+          <button type="submit">Send Message</button>
+        </form>
+      </div>
+      <div class="contact-image">
+        <img src="{{ url_for('static', filename='components/Full inbox-pana.svg') }}" alt="Contact Illustration">
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <p>&copy; 2025 Music Sync. All rights reserved.</p>
+  </footer>
+
+  <!-- Toast Message -->
+  <div id="toast" class="toast hidden">
+    <span id="toast-message"></span>
+    <button onclick="closeToast()" style="margin-left:1rem; background:none; border:none; color:white; font-size:1.2rem;">&times;</button>
+  </div>
+
+  <script>
+    const form = document.getElementById('contactForm');
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toast-message');
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const formData = new FormData(form);
+
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        body: formData
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        showToast(data.message || "Message sent!");
+        form.reset();
+      } else {
+        showToast(data.message || "Something went wrong.");
+      }
+    });
+
+    function showToast(message) {
+      toastMessage.textContent = message;
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('show'), 10);
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.classList.add('hidden'), 300);
+      }, 4000);
+    }
+
+    function closeToast() {
+      toast.classList.remove('show');
+      setTimeout(() => toast.classList.add('hidden'), 300);
+    }
+  </script>
+
+</body>
+</html>

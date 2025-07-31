@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Music Sync</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link href="https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="#" class="logo">
+      <img src="{{ url_for('static', filename='icons/Group 6.svg') }}" alt="Music Sync Logo" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="#"><img src="{{ url_for('static', filename='icons/mynaui--home.svg') }}" alt="Home"></a></li>
+      <li><a href="#aboutus"><img src="{{ url_for('static', filename='icons/id-card.png') }}" alt="About Us"></a></li>
+      <li><a href="https://github.com/vaibhav2067/Music-Generator-Using-Neural-Networks-MusicSync-">
+        <img src="{{ url_for('static', filename='icons/hugeicons--github-01.svg') }}" alt="GitHub"></a></li>
+      <li><a href="{{ url_for('contact') }}"><img src="{{ url_for('static', filename='icons/fluent--contact-card-link-16-regular.svg') }}" alt="Contact"></a></li>
+      <button class="btn3"><a href="{{ url_for('auth.auth') }}">LOGIN</a></button>
+    </ul>
+  </nav>
+
+  <img class="bg2" src="{{ url_for('static', filename='components/Ellipse 5.svg') }}" alt="Background Ellipse 1" />
+  <img class="bg3" src="{{ url_for('static', filename='components/Ellipse 5.svg') }}" alt="Background Ellipse 2" />
+
+  <section class="l1">
+    <div class="head1">Sync Your Sound With AI</div>
+    <div class="para1">Generate the background tune with AI and according to your genre taste.</div>
+    <button class="btn1"><a href="{{ url_for('auth.auth') }}">Get Started</a></button>
+  </section>
+
+  <section class="l2">
+    <div class="head2">Transforming the Future of Music with AI</div>
+    <div class="para2">
+      The fusion of technology and creativity opens doors to endless musical possibilities.
+      At Music Sync, we are proud to be at the forefront of this exciting transformation,
+      empowering creators of all levels to produce extraordinary music.
+    </div>
+  </section>
+
+  <section class="l3">
+    <div class="f1">1. Easy-to-Use Interface: No technical skills required—just input your preferences.</div>
+    <div class="f1">2. Custom Music in Seconds: Get tailored melodies in just a few clicks.</div>
+    <div class="f1">3. Genre & Style Variety: From classical to hip-hop, create across genres.</div>
+    <div class="f1">4. Unlimited Inspiration: Never run out of ideas for your music projects.</div>
+    <div class="f1">5. Export & Share: Download your track and share it with the world.</div>
+  </section>
+
+  <section id="aboutus" class="l4">
+    <div class="head3">About Us</div>
+    <div class="para3">
+      Welcome to Music Sync, the groundbreaking platform that redefines music creation with artificial intelligence. Our technology empowers musicians, creators, and enthusiasts to generate high-quality music based on their unique preferences and tastes. Whether you're exploring new sounds or enhancing your next project, Music Sync makes it simple, fun, and creative.
+    </div>
+  </section>
+
+  <section class="l5">
+    <div class="head4">Join Us in Shaping the Future of Music Creation</div>
+    <div class="para4">
+      Are you a developer passionate about artificial intelligence and music? We believe that innovation thrives on collaboration, and we’re always looking for talented individuals to contribute to our music generator project.
+      Our GitHub repository is the heart of our development. Fork, clone, or open a pull request to start contributing today.
+    </div>
+    <button class="btn2">
+      <a href="https://github.com/vaibhav2067/Music-Generator-Using-Neural-Networks-MusicSync-">Contribute Now!</a>
+    </button>
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-column">
+        <h4>About</h4>
+        <p style="color:#dcdcdc;">
+          Music Sync is redefining music creation with AI, making it accessible, fun, and endlessly creative. Join us in pushing the boundaries of music.
+        </p>
+      </div>
+      <div class="footer-column">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#aboutus">About</a></li>
+          <li><a href="{{ url_for('auth.auth') }}">Get Started</a></li>
+          <li><a href="{{ url_for('contact') }}">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Follow Us</h4>
+        <ul class="social-links">
+          <li><a href="#"><img src="{{ url_for('static', filename='icons/proicons--facebook.svg') }}" alt="Facebook"></a></li>
+          <li><a href="#"><img src="{{ url_for('static', filename='icons/proicons--x-twitter.svg') }}" alt="Twitter"></a></li>
+          <li><a href="#"><img src="{{ url_for('static', filename='icons/lets-icons--insta.svg') }}" alt="Instagram"></a></li>
+          <li><a href="https://github.com/vaibhav2067/Music-Generator-Using-Neural-Networks-MusicSync-">
+            <img src="{{ url_for('static', filename='icons/hugeicons--github-01.svg') }}" alt="GitHub"></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Music Sync. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

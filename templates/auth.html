@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Auth | Music Sync</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}" />
+  <link href="https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="{{ url_for('home') }}" class="logo">
+      <img src="{{ url_for('static', filename='icons/Group 6.svg') }}" alt="Music Sync Logo" />
+    </a>
+    <ul class="nav-links">
+      <li>
+        <a href="{{ url_for('home') }}">
+          <img src="{{ url_for('static', filename='icons/mynaui--home.svg') }}" alt="Home">
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="background-blobs">
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+  </div>
+
+  <section class="auth-wrapper">
+    <div class="auth-card glass">
+      <div class="auth-image">
+        <img src="{{ url_for('static', filename='components/Sign in-pana.svg') }}" alt="Sign In Illustration" id="auth-illustration">
+      </div>
+
+      <div class="auth-forms">
+        <div class="toggle-buttons">
+          <button id="signin-toggle" class="active">Sign In</button>
+          <button id="signup-toggle">Sign Up</button>
+        </div>
+
+        <!-- Sign In Form -->
+        <form id="signin-form" class="auth-form" method="POST" action="{{ url_for('auth.signin') }}">
+          <input type="email" name="email" placeholder="Email" required />
+          <input type="password" name="password" placeholder="Password" required />
+          <button type="submit">Sign In</button>
+
+          <div class="divider">or</div>
+
+          <button type="button" class="google-btn">
+            <img src="{{ url_for('static', filename='icons/hugeicons--google.svg') }}" alt="Google Icon">
+            Sign in with Google
+          </button>
+        </form>
+
+        <!-- Sign Up Form -->
+        <form id="signup-form" class="auth-form hidden" method="POST" action="{{ url_for('auth.signup') }}" class="hidden">
+          <input type="text" name="username" placeholder="User Name" required />
+          <input type="email" name="email" placeholder="Email" required />
+          <input type="password" name="password" placeholder="Password" required />
+          <button type="submit">Sign Up</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <p>&copy; 2025 Music Sync. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const signinToggle = document.getElementById('signin-toggle');
+    const signupToggle = document.getElementById('signup-toggle');
+    const signinForm = document.getElementById('signin-form');
+    const signupForm = document.getElementById('signup-form');
+    const illustration = document.getElementById('auth-illustration');
+
+    signinToggle.addEventListener('click', () => {
+      signinForm.classList.remove('hidden');
+      signupForm.classList.add('hidden');
+      signinToggle.classList.add('active');
+      signupToggle.classList.remove('active');
+      illustration.src = "{{ url_for('static', filename='components/Sign in-pana.svg') }}";
+    });
+
+    signupToggle.addEventListener('click', () => {
+      signupForm.classList.remove('hidden');
+      signinForm.classList.add('hidden');
+      signupToggle.classList.add('active');
+      signinToggle.classList.remove('active');
+      illustration.src = "{{ url_for('static', filename='components/Filing system-amico.svg') }}";
+    });
+  </script>
+
+</body>
+</html>
